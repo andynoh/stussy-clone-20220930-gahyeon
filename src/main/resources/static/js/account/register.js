@@ -52,31 +52,3 @@ function loadErrorMessage(errors) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const loginForwardButton = document.querySelector(".login-return-link");
-
-loginForwardButton.onclick = () => {
-    location.href = "/account/login";
-}

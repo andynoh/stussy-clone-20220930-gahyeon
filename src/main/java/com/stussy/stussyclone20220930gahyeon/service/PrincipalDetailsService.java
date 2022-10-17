@@ -29,9 +29,9 @@ public class PrincipalDetailsService implements UserDetailsService {
         } catch (Exception e) {
             throw new CustomInternalServerErrorException("회원 정보 조회 오류");
         }
-         if (user == null){
-        throw new UsernameNotFoundException("잘못된 사용자 정보");
-         }
+        if (user == null){
+            throw new UsernameNotFoundException("잘못된 사용자 정보");
+        }
 
         return new PrincipalDetails(user);
     }
