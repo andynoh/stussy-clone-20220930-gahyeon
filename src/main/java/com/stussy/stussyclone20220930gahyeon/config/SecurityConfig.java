@@ -24,8 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //config 클�
         http.authorizeRequests()//권한 관련 요청 들어올 시
                 .antMatchers("/index")//지정한 경로로 요청이 들어오면
                 .authenticated()//인증 거치기
-                .antMatchers("/admin/**") //admin으로 실행되는 모든 요청은
-                .hasRole("ADMIN")//ADMIN 권한이 있어야함
+//                .antMatchers("/admin/**") //admin으로 실행되는 모든 요청은
+//                .hasRole("ADMIN")//ADMIN 권한이 있어야함
+                .antMatchers("/admin/**", "/api/admin/**")///////
+                .permitAll()//////////
                 .anyRequest()//다른 요청
                 .permitAll()//권한부여
                 .and()
