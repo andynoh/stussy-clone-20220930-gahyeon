@@ -11,7 +11,7 @@
         <result property="category_name" column="category_name"/>
     </resultMap>
 
-    <select id="getCategory" resultMap="product_category">
+    <select id="getCategoryList" resultMap="product_category">
         select
             id,
             group_id,
