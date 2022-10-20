@@ -185,12 +185,14 @@ class RegisterEventService{
                 category,name,price,simpleInfo,detailInfo,
                 optionInfo,managementInfo,shippingInfo);
                 
-                const registerApi = new RegisterApi();
-                registerApi.createProductRequest(productMst.getObject());
-            }
+            const registerApi = new RegisterApi();
+            if(registerApi.createProductRequest(productMst.getObject())){
+                alert("상품 등록 완료");
+                location.reload();
+            };
         }
-        
     }
+}
     
     class RegisterService { //메인로직
         static #instance;
