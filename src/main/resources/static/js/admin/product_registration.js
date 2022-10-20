@@ -213,7 +213,7 @@ class RegisterEventService{
             const productCategoryList = commonApi.getCategoryList();
 
             const productCategory = document.querySelector(".product-category");
-            productCategory.innerHTML = "";
+            productCategory.innerHTML = `<option value="none">상품 종류</option>`;
 
             productCategoryList.forEach(category => {
                 productCategory.innerHTML += `
