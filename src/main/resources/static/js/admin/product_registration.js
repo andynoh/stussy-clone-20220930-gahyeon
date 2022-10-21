@@ -80,9 +80,9 @@ class CommonApi{
 }
 
 
-class RegisterApi { //클래스
+class ProductApi { //클래스
     createProductRequest(productMst){
-        let responseResult = null;
+        let responseData = null;
         
         $.ajax({
             async: false,
@@ -92,14 +92,35 @@ class RegisterApi { //클래스
             data: JSON.stringify(productMst),
             dataType: "json",
             success: (response) => {
-                responseResult = response.data;
+                responseData = response.data;
             },
             error: (error) => {
                 console.log(error);
             }
         });
         
-        return responseResult;
+        return responseData;
+    }
+
+    getProductListRequest(listRequestParams){
+        let responseData = null;
+
+        $.ajax({
+            async: false,
+            type: "get",
+            url: "/api/admin/products",
+            data: listRequestParams,
+            dataType: "json",
+            success: (response) =>{
+                responseData = response.data;
+            },
+            error: (error) =>{
+                console.log(error);
+            }
+        })
+
+
+        return responseData;
     }
 }
 
@@ -185,8 +206,8 @@ class RegisterEventService{
                 category,name,price,simpleInfo,detailInfo,
                 optionInfo,managementInfo,shippingInfo);
                 
-            const registerApi = new RegisterApi();
-            if(registerApi.createProductRequest(productMst.getObject())){
+            const productApi = new ProductApi();
+            if(productApi.createProductRequest(productMst.getObject())){
                 alert("상품 등록 완료");
                 location.reload();
             };
@@ -194,42 +215,55 @@ class RegisterEventService{
     }
 }
     
-    class RegisterService { //메인로직
-        static #instance;
-    
-        constructor(){ //생성자
-        }
-    
-        static getInstance(){
-            if(this.#instance == null) {
-                this.#instance = new RegisterService();
-            }
-            return this.#instance;
-        }
-    
-        loadRegister(){
-        }
+class RegisterService { //메인로직
+    static #instance;
 
-        getCategoryList(){
-            const commonApi = new CommonApi();
-            const productCategoryList = commonApi.getCategoryList();
-
-            const productCategory = document.querySelector(".product-category");
-            productCategory.innerHTML = `<option value="none">상품 종류</option>`;
-
-            productCategoryList.forEach(category => {
-                productCategory.innerHTML += `
-                <option value="${category.id}">${category.name}</option>
-                `;
-            });
-
-        }
-    
-        setRegisterHeaderEvent() {
-            new RegisterEventService();
-    
-        }
+    constructor(){ //생성자
     }
+
+    static getInstance(){
+        if(this.#instance == null) {
+            this.#instance = new RegisterService();
+        }
+        return this.#instance;
+    }
+
+    loadRegister(){
+    }
+
+    getCategoryList(){
+        const commonApi = new CommonApi();
+        const productCategoryList = commonApi.getCategoryList();
+
+        const productCategory = document.querySelector(".product-category");
+        productCategory.innerHTML = `<option value="none">상품 종류</option>`;
+
+        productCategoryList.forEach(category => {
+            productCategory.innerHTML += `
+            <option value="${category.id}">${category.name}</option>
+            `;
+        });
+
+    }
+
+    setRegisterHeaderEvent() {
+        new RegisterEventService();
+
+    }
+}
+
+class ListService{
+    static #instance = null;
+     
+    getInstance(){
+        if(this.#instance == null){
+            this.#instance = new ListService();
+        }
+        return this.#instance;
+    }
+}
+
+
 
 window.onload = () => {
     RegisterService.getInstance().getCategoryList();
