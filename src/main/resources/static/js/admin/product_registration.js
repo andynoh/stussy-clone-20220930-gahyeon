@@ -70,7 +70,7 @@ class CommonApi{
             success: (response) => {
                 responseResult = response.data;
             },
-            drror: (error) => {
+            error: (error) => {
                 console.log(error);
             }
         });
