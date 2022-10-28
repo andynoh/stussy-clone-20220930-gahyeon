@@ -1,13 +1,13 @@
 class CommonApi {
     static #instance = null;
     static getInstance() {
-        if(this.#instance == null){
+        if(this.#instance == null) {
             this.#instance = new CommonApi();
         }
         return this.#instance;
     }
-
-    getProductMstList(){
+    
+    getProductMstList() {
         let responseData = null;
         $.ajax({
             async: false,
@@ -20,12 +20,11 @@ class CommonApi {
             error: (error) => {
                 console.log(error);
             }
-
         });
         return responseData;
     }
 
-    getProductSizeList(productId){
+    getProductSizeList(productId) {
         let responseData = null;
         $.ajax({
             async: false,
@@ -38,7 +37,6 @@ class CommonApi {
             error: (error) => {
                 console.log(error);
             }
-
         });
         return responseData;
     }
@@ -47,13 +45,13 @@ class CommonApi {
 class ProductApi {
     static #instance = null;
     static getInstance() {
-        if(this.#instance == null){
+        if(this.#instance == null) {
             this.#instance = new ProductApi();
         }
         return this.#instance;
     }
 
-    registProductDtl(productDtlParams){
+    registProductDtl(productDtlParams) {
         $.ajax({
             async: false,
             type: "post",
@@ -68,11 +66,12 @@ class ProductApi {
             error: (error) => {
                 console.log(error);
                 alert(`상품 추가 실패.
-                ${error.responseJSON.error}
-                `);
+${error.responseJSON.data.error}
+                `)
             }
         })
     }
+
     registImgFiles(formData) {
         $.ajax({
             async: false,
@@ -92,40 +91,41 @@ class ProductApi {
             }
         });
     }
-}
 
+}
 
 class Option {
     static #instance = null;
     static getInstance() {
-        if(this.#instance == null){
+        if(this.#instance == null) {
             this.#instance = new Option();
         }
         return this.#instance;
     }
 
-    constructor(){
+    constructor() {
         this.setProductMstSelectOptions();
         this.addSubmitEvent();
     }
 
-    setProductMstSelectOptions(){
+    setProductMstSelectOptions() {
         const pdtMstSelect = document.querySelector(".product-select");
         const responseData = CommonApi.getInstance().getProductMstList();
-            if(responseData != null){
-                if(responseData.length > 0){
-                    responseData.forEach(product => {
-                        console.log(product)
-                        pdtMstSelect.innerHTML += `
-                            <option value = "%{product.pdtId}">(${product.category})${product.pdtName}</option>
-                         `;
-                    });
-                    this.addMstSelectEvent();
-                }
+        if(responseData != null) {
+            if(responseData.length > 0) {
+                responseData.forEach(product => {
+                    console.log(product)
+                    pdtMstSelect.innerHTML += `
+                        <option value="${product.pdtId}">(${product.category})${product.pdtName}</option>
+                    `;
+                });
+                this.addMstSelectEvent();
             }
+        }
+
     }
 
-    addMstSelectEvent(){
+    addMstSelectEvent() {
         const pdtMstSelect = document.querySelector(".product-select");
         pdtMstSelect.onchange = () => {
             this.setSizeSelectOptions(pdtMstSelect.value);
@@ -137,12 +137,12 @@ class Option {
         pdtSizeSelect.innerHTML = "";
         CommonApi.getInstance().getProductSizeList(productId).forEach(size => {
             pdtSizeSelect.innerHTML += `
-               <option value="${size.sizeId}">${size.sizeName}</option>
+                <option value="${size.sizeId}">${size.sizeName}</option>
             `;
-        });
+        })
     }
 
-    addSubmitEvent(){
+    addSubmitEvent() {
         const registButton = document.querySelectorAll(".regist-button")[0];
         registButton.onclick = () => {
             const productDtlParams = {
@@ -152,24 +152,26 @@ class Option {
                 "pdtStock": document.querySelector(".product-stock").value
             }
             ProductApi.getInstance().registProductDtl(productDtlParams);
-        };
+        }
     }
-
 }
+
 class ProductImgFile {
     static #instance = null;
-    static getInstance(){
+    static getInstance() {
         if(this.#instance == null) {
             this.#instance = new ProductImgFile();
         }
         return this.#instance;
     }
+
     newImgList = new Array();
 
     constructor() {
         this.addFileInputEvent();
         this.addUploadEvent();
     }
+
     addUploadEvent() {
         const uploadButton = document.querySelector(".upload-button");
         uploadButton.onclick = () => {
@@ -183,10 +185,9 @@ class ProductImgFile {
             });
 
             ProductApi.getInstance().registImgFiles(formData);
-
+            
         }
     }
-
 
     addFileInputEvent() {
         const filesInput = document.querySelector(".files-input");
@@ -201,7 +202,6 @@ class ProductImgFile {
             let changeFlag = false;
 
             formData.forEach(value => {
-
                 if(value.size != 0) {
                     this.newImgList.push(value);
                     changeFlag = true;
@@ -215,6 +215,7 @@ class ProductImgFile {
 
         }
     }
+
     loadImgs() {
         const fileList = document.querySelector(".file-list");
         fileList.innerHTML = "";
@@ -244,7 +245,7 @@ class ProductImgFile {
             this.addDeleteEvent();
         }, this.newImgList.length * 300);
 
-
+        
     }
 
     addDeleteEvent() {
@@ -258,9 +259,9 @@ class ProductImgFile {
                 }
             }
         });
-
     }
 
+    
 }
 
 
