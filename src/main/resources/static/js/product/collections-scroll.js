@@ -38,12 +38,18 @@ class CollectionsApi {
 }
 //스크롤에서 바뀌는 부분
 
-class pageScroll{
+class PageScroll{
+    static #instance = null;
 
-    constructor(){
-        this.addScrollPageEvent();
+    static getInstance() {
+        if(this.#instance == null){
+            this.#instance = new PageScroll();
+        }
+        return this.#instance;
     }
     
+
+
     addScrollPageEvent(){
         const html = document.querySelector("html");
         const body = document.querySelector("body");
@@ -76,15 +82,19 @@ class CollectionsService{
         }
         return this.#instance;
     }
-    
-    constructor(){
-        new pageScroll();
-    }
 
+    pdtIdList = null;
+
+    
+    
     collectionsEntity = {
         page: 1,
         totalCount: 0,
         maxPage: 0
+    }
+    
+    constructor(){
+        this.pdtIdList = new Array();
     }
 
     loadCollections() {
@@ -108,6 +118,7 @@ class CollectionsService{
         const collectionProducts = document.querySelector(".collection-products");
 
         responseData.forEach(product => {
+            this.pdtIdList.push(product.productId);
             collectionProducts.innerHTML += `
                 <li class="collection-product">
                     <div class="product-img">
@@ -121,6 +132,17 @@ class CollectionsService{
                     </div>
                 </li>
             `;
+        });
+        this.addProductListEvent();
+    }
+
+    addProductListEvent(){
+        const collectionProducts = document.querySelectorAll(".collection-product");
+
+        collectionProducts.forEach((product,index) => {
+            product.onclick = () => {
+                location.href = "/product/" + this.pdtIdList[index];
+            }
         })
     }
 
@@ -129,5 +151,5 @@ class CollectionsService{
 
 window.onload = () => {
     CollectionsService.getInstance().loadCollections();
-    new pageScroll();
+    PageScroll.getInstance().addScrollPageEvent();
 }
