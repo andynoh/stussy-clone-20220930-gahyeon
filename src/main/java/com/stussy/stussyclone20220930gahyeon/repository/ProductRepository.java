@@ -1,6 +1,7 @@
 package com.stussy.stussyclone20220930gahyeon.repository;
 
 import com.stussy.stussyclone20220930gahyeon.domain.CollectionsProduct;
+import com.stussy.stussyclone20220930gahyeon.domain.PaymentProduct;
 import com.stussy.stussyclone20220930gahyeon.domain.Product;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,4 +14,5 @@ public interface ProductRepository {
     public List<CollectionsProduct> getProductList(Map<String, Object> map) throws Exception;
 
     public Product getProduct(int pdt_id) throws Exception;
+    public PaymentProduct getPaymentProduct(int pdtDtlId) throws Exception;
 }
