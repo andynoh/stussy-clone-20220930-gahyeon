@@ -42,7 +42,11 @@
 
     </select>
 
-    <insert id="saveUser" parameterType="com.stussy.stussyclone20220930gahyeon.domain.User">
+    <insert id="saveUser"
+            parameterType="com.stussy.stussyclone20220930gahyeon.domain.User"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
         insert into
             user_mst
         values(

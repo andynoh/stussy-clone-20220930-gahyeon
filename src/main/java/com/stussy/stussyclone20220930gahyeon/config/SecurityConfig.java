@@ -1,6 +1,9 @@
 package com.stussy.stussyclone20220930gahyeon.config;
 
 import com.stussy.stussyclone20220930gahyeon.security.AuthFailureHandler;
+
+import com.stussy.stussyclone20220930gahyeon.service.PrincipalOauth2Service;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,9 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EnableWebSecurity
+@RequiredArgsConstructor
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter { //config 클래스는 (서버)설정 @Configuration 달아주기
+
+    private final PrincipalOauth2Service principalOauth2Service;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -36,6 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //config 클�
                 .loginPage("/account/login")//지정한 경로의 페이지로 로그인페이지 보내기  get 요청
                 .loginProcessingUrl("/account/login")//login service post요청
                 .failureHandler(new AuthFailureHandler())
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(principalOauth2Service)
+                .and()
                 .defaultSuccessUrl("/index");//로그인 성공시 기본으로 이동되는 경로
     }
 }
