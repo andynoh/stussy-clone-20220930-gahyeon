@@ -32,6 +32,7 @@ public class PrincipalOauth2Service extends DefaultOAuth2UserService {
         try {
             principalDetails = getPrincipalDetails(provider, oAuth2User.getAttributes());
         } catch (Exception e) {
+
             throw new OAuth2AuthenticationException("login failed");
         }
         return principalDetails;
@@ -63,7 +64,7 @@ public class PrincipalOauth2Service extends DefaultOAuth2UserService {
                     .build();
 
             accountRepository.saveUser(user);
-        }else if(user.getProvider().isBlank() || !user.getProvider().contains(provider)){
+        }else if(user.getProvider() == null){
             //연동
 
         }
